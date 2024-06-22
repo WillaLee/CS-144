@@ -38,8 +38,13 @@ public:
   const Reader& reader() const { return output_.reader(); }
 
   // Access output stream writer, but const-only (can't write from outside)
+  Writer& writer() { return output_.writer(); }
   const Writer& writer() const { return output_.writer(); }
 
 private:
   ByteStream output_; // the Reassembler writes to this ByteStream
+  uint64_t first_index_ {};
+  uint64_t bytes_pending_ {};
+  std::deque<char> unassembled_data {};
+  void insert(uint64_t first_index, std::string data);
 };
